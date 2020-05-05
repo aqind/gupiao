@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>money</title>
+		<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+		<script src="js/echarts.min.js"></script>
+	
+	</head>
+
+	
+	<body>
+		<div id="stock" style="width:0px;height:0px;"></div>
+	</body>
+	
+	<script charset="UTF-8" type="text/javascript">
+	
+	var stockData;
+	(function(){
+		$.ajax({
+			type:"get",
+			url:"http://localhost:8008/stock/chats/list",
+			async:false,
+			success:function(data){
+				//console.log(data);
+				stockData = data;
+				}
+		});
+	})();
+	
+	for(var  i = 0 ; i < stockData.length; i++){
+		//console.log(stockData[i].title)
+		//var value = [stockData[i].fundDetail.supperSum, stockData[i].fundDetail.bigSum, stockData[i].fundDetail.middleSum, stockData[i].fundDetail.smallSum];
+		//console.log(value)
+		// 柱状图
+ 		var divSum = document.createElement('div');
+ 		divSum.id = stockData[i].title + "_sum";
+ 		divSum.style = "width:600px;height:600px;float: right;";
+ 		var bo = document.body;
+		bo.insertBefore(divSum, bo.lastChild);
+ 		var myChart = echarts.init(document.getElementById(stockData[i].title+ "_sum"));
+ 		option = {
+ 			tooltip: {
+		        trigger: 'axis',
+		        axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+		            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+		        }
+		    },
+		    xAxis: {
+		        type: 'category',
+		        data: ['Supper', 'Big', 'Middle', 'Samll']
+		    },
+		    yAxis: {
+		        type: 'value',
+		         axisLabel: {
+		            formatter: '{value} 万'
+		        },
+		    },
+		    series: [{
+		        data: stockData[i].sum,
+		        type: 'bar',
+		        label: {
+                show: true
+            	},
+            	itemStyle: {
+			        	normal: {
+			            	color: "#00bcd4",
+			           	 	lineStyle: {
+			               	 color: "#00bcd4"
+					            }
+					        }
+			    	},
+		        showBackground: true,
+		        backgroundStyle: {
+		            color: 'rgba(220, 220, 220, 0.8)'
+		        }
+		    }]
+		};
+		
+		// 生成柱状图
+		myChart.setOption(option);
+		
+		//线图
+		var div = document.createElement('div');
+		
+		div.id = stockData[i].title;
+		
+		div.style = "width:800px;height:600px;;";
+		var bo = document.body;
+		
+		bo.insertBefore(div, bo.lastChild);
+		//获取div
+		var myChart = echarts.init(document.getElementById(stockData[i].title));
+		option = {
+		    title: {
+		        text: stockData[i].title,
+		        subtext: stockData[i].stockDesc
+		    },
+		    tooltip: {
+		        trigger: 'axis'
+		    },
+		    legend: {
+		        data: ['supper', 'big', 'middle', 'small']
+		    },
+		    toolbox: {
+		        show: true,
+		        feature: {
+		            dataZoom: {
+		                yAxisIndex: 'none'
+		            },
+		            dataView: {readOnly: false},
+		            magicType: {type: ['line', 'bar']},
+		            restore: {},
+		            saveAsImage: {}
+		        }
+		    },
+		    xAxis: {
+		        type: 'category',
+		        boundaryGap: false,
+		        data: stockData[i].xaxis
+		    },
+		    yAxis: {
+		        type: 'value',
+		        axisLabel: {
+		            formatter: '{value} 万'
+		        }
+		    },
+		    series: [
+		    //supper
+		        {
+		            name: 'supper',
+		            type: 'line',
+		            itemStyle: {
+			        	normal: {
+			            	color: "#f30808",
+			           	 	lineStyle: {
+			               	 color: "#f30808"
+					            }
+					        }
+			    	},
+		            data: stockData[i].series[0],
+		        },
+		        //big
+		        {
+		            name: 'big',
+		            type: 'line',
+		            itemStyle: {
+			        	normal: {
+			            	color: "#ddf709",
+			           	 	lineStyle: {
+			               	 color: "#ddf709"
+					            }
+					        }
+			    	},
+		            data: stockData[i].series[1],
+
+		        },
+		        //middle
+		          {
+		            name: 'middle',
+		            type: 'line',
+		            itemStyle: {
+			        	normal: {
+			            	color: "#030bf7",
+			           	 	lineStyle: {
+			               	 color: "#030bf7"
+					            }
+					        }
+			    	},
+		            data: stockData[i].series[2],
+		           
+		        },
+		        //small
+		        {
+		            name: 'small',
+		            type: 'line',
+		            itemStyle: {
+			        	normal: {
+			            	color: "#04fd17",
+			           	 	lineStyle: {
+			               	 color: "#04fd17"
+					            }
+					        }
+			    	},
+		            data: stockData[i].series[3],
+		        }
+		    ]
+		};
+		
+		//设置表格
+   		myChart.setOption(option);
+ 		
+ 		
+ 		
+	}
+
+	</script>
+</html>

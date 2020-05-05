@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>money</title>
+		<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+		<script src="js/echarts.min.js"></script>
+	
+	</head>
+
+	
+	<body>
+		<div id="stock" style="width:0px;height:0px;"></div>
+	</body>
+	
+	<script charset="UTF-8" type="text/javascript">
+
+	var stockData;
+	(function(){
+		$.ajax({
+			type:"get",
+			url:"http://localhost:8008/stock/chats/list",
+			async:false,
+			success:function(data){
+				//console.log(data);
+				stockData = data;
+				}
+		});
+	})();
+	
+	for(var  i = 0 ; i < stockData.length; i++){
+	
+// begin
+		var divBig = document.createElement('div');
+ 		divBig.id = stockData[i].title + "_big";
+ 		divBig.style = "width:600px;height:600px;float: right;";
+ 		var bo = document.body;
+		bo.insertBefore(divBig, bo.lastChild);
+ 		var myChart = echarts.init(document.getElementById(stockData[i].title+ "_big"));var xAxisData = [];
+
+		var emphasisStyle = {
+			itemStyle: {
+				barBorderWidth: 1,
+				shadowBlur: 10,
+				shadowOffsetX: 0,
+				shadowOffsetY: 0,
+				shadowColor: 'rgba(0,0,0,0.5)'
+			}
+		};
+
+		option = {
+		    title: {
+		        text: stockData[i].title+'-大单',
+		        subtext: stockData[i].stockDesc
+		    },
+			backgroundColor: '#eee',
+			legend: {
+				data: ['bar', 'bar2', 'bar3', 'bar4'],
+				left: 10
+			},
+			brush: {
+				toolbox: ['rect', 'polygon', 'lineX', 'lineY', 'keep', 'clear'],
+				xAxisIndex: 0
+			},
+			toolbox: {
+				feature: {
+					magicType: {
+						type: ['stack', 'tiled']
+					},
+					dataView: {}
+				}
+			},
+			tooltip: {},
+			xAxis: {
+				data: xAxisData,
+				name: 'X Axis',
+				axisLine: {onZero: true},
+				splitLine: {show: false},
+				splitArea: {show: false}
+			},
+		    yAxis: {
+		        type: 'value',
+		        axisLabel: {
+		            formatter: '{value} 万'
+		        }
+		    },
+		    /*
+			yAxis: {
+				inverse: false,
+				splitArea: {show: false}
+		    },*/
+			grid: {
+				left: 100
+			},
+			visualMap: {
+				type: 'continuous',
+				dimension: 1,
+				text: ['High', 'Low'],
+				inverse: false,
+				itemHeight: 200,
+				calculable: true,
+				min: -2,
+				max: 6,
+				top: 60,
+				left: 10,
+				inRange: {
+					colorLightness: [0.4, 0.8]
+				},
+				outOfRange: {
+					color: '#bbb'
+				},
+				controller: {
+					inRange: {
+						color: '#2f4554'
+					}
+				}
+			},
+			series: [
+				{
+					type: 'bar',
+					stack: 'one',
+					emphasis: emphasisStyle,
+					data: stockData[i].bigInout[0]
+				},
+				{
+					type: 'bar',
+					stack: 'one',
+					emphasis: emphasisStyle,
+					data: stockData[i].bigInout[1]
+				}
+			]
+		};
+		myChart.setOption(option);
+// end
+
+
+// begin
+		var divSuper = document.createElement('div');
+ 		divSuper.id = stockData[i].title + "_super";
+ 		divSuper.style = "width:600px;height:600px;float: right;";
+ 		var bo = document.body;
+		bo.insertBefore(divSuper, bo.lastChild);
+ 		var myChart = echarts.init(document.getElementById(stockData[i].title+ "_super"));var xAxisData = [];
+
+		var emphasisStyle = {
+			itemStyle: {
+				barBorderWidth: 1,
+				shadowBlur: 10,
+				shadowOffsetX: 0,
+				shadowOffsetY: 0,
+				shadowColor: 'rgba(0,0,0,0.5)'
+			}
+		};
+
+		option = {
+		    title: {
+		        text: stockData[i].title+'-超大单',
+		        subtext: stockData[i].stockDesc
+		    },
+			backgroundColor: '#eee',
+			legend: {
+				data: ['bar', 'bar2', 'bar3', 'bar4'],
+				left: 10
+			},
+			brush: {
+				toolbox: ['rect', 'polygon', 'lineX', 'lineY', 'keep', 'clear'],
+				xAxisIndex: 0
+			},
+			toolbox: {
+				feature: {
+					magicType: {
+						type: ['stack', 'tiled']
+					},
+					dataView: {}
+				}
+			},
+			tooltip: {},
+			xAxis: {
+				data: xAxisData,
+				name: 'X Axis',
+				axisLine: {onZero: true},
+				splitLine: {show: false},
+				splitArea: {show: false}
+			},
+		    yAxis: {
+		        type: 'value',
+		        axisLabel: {
+		            formatter: '{value} 万'
+		        }
+		    },
+		    /*
+			yAxis: {
+				inverse: false,
+				splitArea: {show: false}
+		    },*/
+			grid: {
+				left: 100
+			},
+			visualMap: {
+				type: 'continuous',
+				dimension: 1,
+				text: ['High', 'Low'],
+				inverse: false,
+				itemHeight: 200,
+				calculable: true,
+				min: -2,
+				max: 6,
+				top: 60,
+				left: 10,
+				inRange: {
+					colorLightness: [0.4, 0.8]
+				},
+				outOfRange: {
+					color: '#bbb'
+				},
+				controller: {
+					inRange: {
+						color: '#2f4554'
+					}
+				}
+			},
+			series: [
+				{
+					type: 'bar',
+					stack: 'one',
+					emphasis: emphasisStyle,
+					data: stockData[i].superInout[0]
+				},
+				{
+					type: 'bar',
+					stack: 'one',
+					emphasis: emphasisStyle,
+					data: stockData[i].superInout[1]
+				}
+			]
+		};
+		myChart.setOption(option);
+// end
+		//线图
+		/*var div = document.createElement('div');
+		
+		div.id = stockData[i].title;
+		
+		div.style = "width:800px;height:600px;;";
+		var bo = document.body;
+		
+		bo.insertBefore(div, bo.lastChild);
+		//获取div
+		var myChart = echarts.init(document.getElementById(stockData[i].title));
+		option = {
+		    title: {
+		        text: stockData[i].title,
+		        subtext: stockData[i].stockDesc
+		    },
+		    tooltip: {
+		        trigger: 'axis'
+		    },
+		    legend: {
+		        data: ['supper', 'big', 'middle', 'small']
+		    },
+		    toolbox: {
+		        show: true,
+		        feature: {
+		            dataZoom: {
+		                yAxisIndex: 'none'
+		            },
+		            dataView: {readOnly: false},
+		            magicType: {type: ['line', 'bar']},
+		            restore: {},
+		            saveAsImage: {}
+		        }
+		    },
+		    xAxis: {
+		        type: 'category',
+		        boundaryGap: false,
+		        data: stockData[i].xaxis
+		    },
+		    yAxis: {
+		        type: 'value',
+		        axisLabel: {
+		            formatter: '{value} 万'
+		        }
+		    },
+		    series: [
+		    //supper
+		        {
+		            name: 'supper',
+		            type: 'line',
+		            itemStyle: {
+			        	normal: {
+			            	color: "#f30808",
+			           	 	lineStyle: {
+			               	 color: "#f30808"
+					            }
+					        }
+			    	},
+		            data: stockData[i].series[0],
+		        },
+		        //big
+		        {
+		            name: 'big',
+		            type: 'line',
+		            itemStyle: {
+			        	normal: {
+			            	color: "#ddf709",
+			           	 	lineStyle: {
+			               	 color: "#ddf709"
+					            }
+					        }
+			    	},
+		            data: stockData[i].series[1],
+
+		        },
+		        //middle
+		          {
+		            name: 'middle',
+		            type: 'line',
+		            itemStyle: {
+			        	normal: {
+			            	color: "#030bf7",
+			           	 	lineStyle: {
+			               	 color: "#030bf7"
+					            }
+					        }
+			    	},
+		            data: stockData[i].series[2],
+		           
+		        },
+		        //small
+		        {
+		            name: 'small',
+		            type: 'line',
+		            itemStyle: {
+			        	normal: {
+			            	color: "#04fd17",
+			           	 	lineStyle: {
+			               	 color: "#04fd17"
+					            }
+					        }
+			    	},
+		            data: stockData[i].series[3],
+		        }
+		    ]
+		};
+		
+		//设置表格
+   		myChart.setOption(option);
+ 		*/
+ 		
+ 		
+	}
+
+	</script>
+</html>

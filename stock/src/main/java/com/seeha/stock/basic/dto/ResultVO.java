@@ -19,6 +19,10 @@ public class ResultVO {
 
     private List<List<BigDecimal>> series;
 
+    private List<List<BigDecimal>> superInout;
+
+    private List<List<BigDecimal>> bigInout;
+
     private List<BigDecimal> sum;
 
     private String stockDesc;

@@ -91,6 +91,22 @@ public class StockServiceImpl implements StockService {
             list.add(small);
             resultVO.setSeries(list);
 
+            // superInout List
+            List<List<BigDecimal>> s_io_list = new ArrayList<>();
+            List<BigDecimal> s_i_list = stockMap.get(stockName).stream().map(v -> v.getSupperIn().divide(new BigDecimal(10000))).collect(Collectors.toList());
+            List<BigDecimal> s_o_list = stockMap.get(stockName).stream().map(v -> v.getSupperOut().multiply(new BigDecimal(-1)).divide(new BigDecimal(10000))).collect(Collectors.toList());
+            s_io_list.add(s_i_list);
+            s_io_list.add(s_o_list);
+            resultVO.setSuperInout(s_io_list);
+
+            // bigInout List
+            List<List<BigDecimal>> b_io_list = new ArrayList<>();
+            List<BigDecimal> b_i_list = stockMap.get(stockName).stream().map(v -> v.getBigIn().divide(new BigDecimal(10000))).collect(Collectors.toList());
+            List<BigDecimal> b_o_list = stockMap.get(stockName).stream().map(v -> v.getBigOut().multiply(new BigDecimal(-1)).divide(new BigDecimal(10000))).collect(Collectors.toList());
+            b_io_list.add(b_i_list);
+            b_io_list.add(b_o_list);
+            resultVO.setBigInout(b_io_list);
+
             // sum
             List<BigDecimal> sum = new ArrayList<>();
             sum.add(stockMapSum.get(stockName).get(0).getSupperSum());
